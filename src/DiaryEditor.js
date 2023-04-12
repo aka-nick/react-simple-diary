@@ -58,6 +58,7 @@ const DiaryEditor = () => {
         />
       </div>
       <div>
+        오늘의 감정 점수:
         <select
           name="emotion"
           value={state.emotion}
