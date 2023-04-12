@@ -31,14 +31,13 @@ const DiaryEditor = ({ onCreate }) => {
     }
 
     console.log(state);
+    onCreate(state.author, state.content, state.emotion);
     alert("저장 성공");
     setState({
       author: "",
       content: "",
       emotion: 1,
     });
-
-    onCreate(state.author, state.content, state.emotion);
   };
 
   return (
