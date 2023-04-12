@@ -6,11 +6,11 @@ const DiaryEditor = () => {
     content: "",
   });
 
-  const changeAuthor = (e) => {
+  const handleChangeState = (e) => {
     console.log(e.target.value);
     setState({
       ...state,
-      author: e.target.value,
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -19,20 +19,19 @@ const DiaryEditor = () => {
       <h2>오늘의 일기</h2>
       <div>
         <input
+          name="author"
           value={state.author}
           onChange={(e) => {
-            changeAuthor(e);
+            handleChangeState(e);
           }}
         />
       </div>
       <div>
         <textarea
+          name="content"
           value={state.content}
           onChange={(e) => {
-            setState({
-              ...state,
-              content: e.target.value,
-            });
+            handleChangeState(e);
           }}
         />
       </div>
