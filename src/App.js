@@ -2,7 +2,7 @@ import "./App.css";
 import { useEffect, useRef, useState } from "react";
 import DiaryEditor from "./DiaryEditor";
 import DiaryList from "./DiaryList";
-import LifeCycle from "./LifeCycle";
+// import LifeCycle from "./LifeCycle";
 
 // https://jsonplaceholder.typicode.com/comments
 
