@@ -1,8 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
+import { DiaryDispatchContext } from "./App";
 
-const DiaryEditor = ({ onCreate }) => {
+const DiaryEditor = () => {
   const authorInput = useRef();
   const contentInput = useRef();
+
+  const { onCreate } = useContext(DiaryDispatchContext);
 
   const [state, setState] = useState({
     author: "",
@@ -19,13 +22,11 @@ const DiaryEditor = ({ onCreate }) => {
 
   const handleSubmit = () => {
     if (state.author.length < 1) {
-      //   alert("작성자명은 최소 한 글자 이상 입력해주세요");
       authorInput.current.focus();
       return;
     }
 
     if (state.content.length < 5) {
-      //   alert("일기는 최소 다섯 글자 이상 입력해주세요.");
       contentInput.current.focus();
       return;
     }
