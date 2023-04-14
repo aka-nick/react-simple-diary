@@ -1,34 +1,49 @@
 import "./App.css";
-import { useCallback, useMemo, useEffect, useRef, useState } from "react";
+import { useCallback, useMemo, useEffect, useRef, useReducer } from "react";
 import DiaryEditor from "./DiaryEditor";
 import DiaryList from "./DiaryList";
 
-function App() {
-  const [data, setData] = useState([]);
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "INIT":
+      return action.data;
+    case "CREATE":
+      const created_date = new Date().getTime();
+      const newItem = {
+        ...action.data,
+        created_date,
+      };
+      return [newItem, ...state];
+    case "REMOVE":
+      return state.filter((it) => it.id !== action.id);
+    case "EDIT":
+      return state.map((it) =>
+        it.id === action.targetId ? { ...it, content: action.newContent } : it
+      );
+    default:
+      return state;
+  }
+};
+
+const App = () => {
+  const [data, dispatch] = useReducer(reducer, []);
 
   const dataId = useRef(0);
 
   const onCreate = useCallback((author, content, emotion) => {
-    const created_date = new Date().getTime();
-    const newItem = {
-      author,
-      content,
-      emotion,
-      created_date,
-      id: dataId.current,
-    };
     dataId.current++;
-    setData((data) => [newItem, ...data]);
+    dispatch({
+      type: "CREATE",
+      data: { author, content, emotion, id: dataId.current },
+    });
   }, []);
+
   const onRemove = useCallback((id) => {
-    setData((data) => data.filter((it) => it.id !== id));
+    dispatch({ type: "REMOVE", id });
   }, []);
+
   const onEdit = useCallback((targetId, newContent) => {
-    setData((data) =>
-      data.map((it) =>
-        it.id === targetId ? { ...it, content: newContent } : it
-      )
-    );
+    dispatch({ type: "EDIT", targetId, newContent });
   }, []);
 
   const getData = async () => {
@@ -46,7 +61,7 @@ function App() {
       };
     });
 
-    setData(initData);
+    dispatch({ type: "INIT", data: initData });
   };
   useEffect(() => {
     getData();
@@ -71,6 +86,6 @@ function App() {
       <DiaryList diaryList={data} onRemove={onRemove} onEdit={onEdit} />
     </div>
   );
-}
+};
 
 export default App;
