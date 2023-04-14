@@ -20,17 +20,16 @@ function App() {
     dataId.current++;
     setData((data) => [newItem, ...data]);
   }, []);
-  const onRemove = (id) => {
-    const newDiaryList = data.filter((it) => it.id !== id);
-    setData(newDiaryList);
-  };
-  const onEdit = (targetId, newContent) => {
-    setData(
+  const onRemove = useCallback((id) => {
+    setData((data) => data.filter((it) => it.id !== id));
+  }, []);
+  const onEdit = useCallback((targetId, newContent) => {
+    setData((data) =>
       data.map((it) =>
         it.id === targetId ? { ...it, content: newContent } : it
       )
     );
-  };
+  }, []);
 
   const getData = async () => {
     const res = await fetch(
